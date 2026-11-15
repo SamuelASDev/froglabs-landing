@@ -1,0 +1,26 @@
+/* Extras: idioma, artes do topo e retrato */
+.hero-art{position:relative;display:grid;place-items:center}
+
+/* idioma */
+.hud__lang{margin-left:12px;height:32px;padding:0 10px;display:flex;align-items:center;gap:4px;cursor:pointer;
+  background:rgba(0,0,0,.55);border:1px solid rgba(201,164,92,.35);color:var(--muted);font:700 .72rem var(--display);letter-spacing:.12em}
+.hud__lang span{opacity:.4}
+.hud__lang[data-on="pt"] b:first-child,.hud__lang[data-on="en"] b:last-of-type{color:var(--gold-hi)}
+.hud__sound{margin-left:8px}
+
+.foot__fan{margin-top:6px;font-size:.78rem;opacity:.7}
+
+/* fundo do topo (catedral) */
+.bonfire{position:relative;isolation:isolate}
+.hero-bg{position:absolute;top:0;bottom:0;left:50%;width:100vw;transform:translateX(-50%);z-index:-1;pointer-events:none;
+  background:linear-gradient(180deg,rgba(11,10,8,.55) 0%,rgba(11,10,8,.25) 40%,rgba(11,10,8,.7) 80%,var(--bg) 100%),url("img/souls-bg.webp") center/cover}
+
+/* retrato */
+.portrait{width:170px;height:170px;background:url("img/souls-avatar.webp") center 18%/cover}
+.portrait svg{display:none}
+
+@media (max-width:600px){
+  .hud__lang{margin-left:auto;padding:0 6px}
+  .hud__sound{margin-left:6px}
+  .hud{gap:8px}
+}

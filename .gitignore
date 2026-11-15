@@ -1,0 +1,8 @@
+# pacote de deploy (gerado localmente)
+*.zip
+
+# vídeo da fogueira: derivado de filmagem do jogo, fica só no deploy.
+# Sem ele, a página mostra a fogueira desenhada em SVG.
+assets/bonfire.webm
+assets/bonfire.mp4
+assets/bonfire-poster.jpg

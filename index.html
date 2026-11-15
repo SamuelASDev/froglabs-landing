@@ -1,0 +1,298 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>FrogLabs — Samuel Abreu Sales</title>
+<meta name="description" content="FrogLabs: o laboratório do Samuel Abreu Sales, desenvolvedor back-end PHP e Laravel que ama souls-likes e desenvolvimento de jogos.">
+<meta name="theme-color" content="#0b0a08">
+<meta property="og:title" content="FrogLabs — Samuel Abreu Sales">
+<meta property="og:description" content="Descanse na fogueira. Conheça o viajante, as áreas descobertas e deixe uma mensagem no chão.">
+<meta property="og:type" content="website">
+<link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+<script>try{var l=localStorage.getItem("fl-lang");if(l)document.documentElement.dataset.lang=l}catch(e){}</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;700;900&family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&family=IM+Fell+English:ital@1&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/style.css?v=6">
+<link rel="stylesheet" href="assets/themes.css?v=6">
+</head>
+<body>
+
+<!-- TELA DE TÍTULO -->
+<div class="title" id="title" role="button" tabindex="0" aria-label="Entrar no site">
+  <div class="title__inner">
+    <svg class="sigil" viewBox="0 0 120 120" aria-hidden="true"><use href="#sigil"/></svg>
+    <p class="title__pre" data-k="title.pre">um laboratório de</p>
+    <h1 class="title__logo">Frog<span>Labs</span></h1>
+    <p class="title__sub">Samuel Abreu Sales</p>
+    <p class="title__press"><span class="kbd-only" data-k="title.key">Pressione qualquer tecla</span><span class="touch-only" data-k="title.touch">Toque na tela</span></p>
+  </div>
+  <p class="title__sound" data-k="title.sound">♪ com som · dá para silenciar no topo</p>
+  <p class="title__foot" data-k="title.foot">© froglabs.site · nenhum sapo foi ferido</p>
+</div>
+
+<!-- SÍMBOLOS SVG -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <linearGradient id="g-gold" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" style="stop-color:var(--sig1,#f1d79a)"/><stop offset=".55" style="stop-color:var(--sig2,#c9a45c)"/><stop offset="1" style="stop-color:var(--sig3,#7a5a26)"/>
+    </linearGradient>
+    <symbol id="sigil" viewBox="0 0 120 120">
+      <g fill="none" stroke="url(#g-gold)" stroke-width="1.6">
+        <circle cx="60" cy="60" r="56"/>
+        <circle cx="60" cy="60" r="50" stroke-width=".8" stroke-dasharray="2 4"/>
+        <path d="M60 4 L66 14 L60 24 L54 14Z M60 96 L66 106 L60 116 L54 106Z M4 60 L14 54 L24 60 L14 66Z M96 60 L106 54 L116 60 L106 66Z" fill="url(#g-gold)" stroke="none"/>
+        <path d="M32 66 C32 50 44 42 60 42 C76 42 88 50 88 66 C88 78 76 86 60 86 C44 86 32 78 32 66Z" stroke-width="2"/>
+        <circle cx="44" cy="44" r="9" stroke-width="2"/>
+        <circle cx="76" cy="44" r="9" stroke-width="2"/>
+        <circle cx="44" cy="44" r="3" fill="url(#g-gold)" stroke="none"/>
+        <circle cx="76" cy="44" r="3" fill="url(#g-gold)" stroke="none"/>
+        <path d="M44 68 Q60 78 76 68" stroke-width="2"/>
+        <path d="M60 52 L60 60" stroke-width="1"/>
+        <path d="M30 84 L22 92 M90 84 L98 92" stroke-width="2"/>
+      </g>
+    </symbol>
+  </defs>
+</svg>
+
+<canvas id="embers" aria-hidden="true"></canvas>
+
+<!-- HUD -->
+<header class="hud" id="hud">
+  <a href="#fogueira" class="hud__brand" aria-label="FrogLabs">
+    <svg viewBox="0 0 120 120" aria-hidden="true"><use href="#sigil"/></svg>
+    <span>FrogLabs</span>
+  </a>
+  <nav class="hud__nav" aria-label="Seções">
+    <a href="#ficha" data-k="nav1">Ficha</a>
+    <a href="#areas" data-k="nav2">Áreas</a>
+    <a href="#mensagens" data-k="nav3">Mensagens</a>
+    <a href="#viajar" data-k="nav4">Viajar</a>
+  </nav>
+  <button class="hud__lang" id="lang" type="button" aria-label="Mudar idioma / Change language"><b>PT</b><span>/</span><b>EN</b></button>
+  <button class="hud__sound" id="sound" type="button" aria-pressed="true" aria-label="Som">
+    <span class="eq" aria-hidden="true"><i></i><i></i><i></i></span>
+  </button>
+  <div class="hud__souls">
+    <span class="hud__souls-icon" aria-hidden="true"></span>
+    <span id="souls">0</span>
+  </div>
+</header>
+
+<main>
+  <!-- HERO -->
+  <section class="bonfire" id="fogueira">
+    <div class="hero-bg" aria-hidden="true"></div>
+    <p class="banner-lite" data-k="hero.eyebrow">Fogueira acesa</p>
+    <h2 class="bonfire__place" data-k="hero.place">Clareira de froglabs.site</h2>
+
+    <div class="hero-art">
+      <!-- Souls: fogueira -->
+      <div class="fire" aria-hidden="true">
+        <video class="fire__img" autoplay muted loop playsinline preload="auto" poster="assets/bonfire-poster.jpg"
+          onloadeddata="this.parentNode.classList.add('has-img')">
+          <source src="assets/bonfire.webm?v=3" type="video/webm">
+          <source src="assets/bonfire.mp4?v=3" type="video/mp4" onerror="this.parentNode.remove()">
+        </video>
+        <div class="fire__glow"></div>
+        <div class="fire__flames"><span></span><span></span><span></span><span></span><span></span></div>
+        <svg class="fire__base" viewBox="0 0 200 70">
+          <defs>
+            <radialGradient id="ash" cx=".5" cy=".15" r=".8">
+              <stop offset="0" stop-color="#ff9a4a"/><stop offset=".18" stop-color="#6b4a33"/>
+              <stop offset=".5" stop-color="#3a332d"/><stop offset="1" stop-color="#14110e"/>
+            </radialGradient>
+          </defs>
+          <path d="M4 66 C20 52 40 46 62 40 C78 34 90 28 100 28 C112 28 124 34 140 40 C162 46 182 54 196 66Z" fill="url(#ash)"/>
+          <g fill="#2e2a25" stroke="#0e0c0a" stroke-width="2">
+            <path d="M2 66 q4 -12 16 -10 q10 2 8 10z"/><path d="M174 66 q2 -11 14 -10 q10 2 10 10z"/>
+          </g>
+        </svg>
+        <svg class="fire__sword" viewBox="0 0 200 190">
+          <g transform="rotate(-7 100 168)">
+            <path d="M94 62 L106 62 L104 166 L100 176 L96 166Z" fill="#8a8378" stroke="#120e0b" stroke-width="1.6"/>
+            <path d="M74 56 Q86 60 100 58 Q114 60 126 56 L128 62 Q114 66 100 64 Q86 66 72 62Z" fill="#5c4a35" stroke="#120e0b" stroke-width="1.6"/>
+            <rect x="96" y="24" width="8" height="32" rx="2" fill="#3a2a1c" stroke="#120e0b" stroke-width="1.4"/>
+            <path d="M100 10 L107 18 L100 26 L93 18Z" fill="#5c4a35" stroke="#120e0b" stroke-width="1.4"/>
+          </g>
+        </svg>
+      </div>
+
+    </div>
+
+    <nav class="rest-menu" aria-label="Menu">
+      <a href="#ficha"><span class="rest-menu__ico">✦</span><span data-k="menu1">Ficha do viajante</span></a>
+      <a href="#areas"><span class="rest-menu__ico">✦</span><span data-k="menu2">Áreas descobertas</span></a>
+      <a href="#mensagens"><span class="rest-menu__ico">✦</span><span data-k="menu3">Mensagens no chão</span></a>
+      <a href="#viajar"><span class="rest-menu__ico">✦</span><span data-k="menu4">Viajar</span></a>
+    </nav>
+    <p class="bonfire__hint" data-k="hero.hint">Descanse um pouco. Os inimigos não vão voltar (prometo).</p>
+  </section>
+
+  <!-- FICHA -->
+  <section class="section" id="ficha">
+    <header class="section__head">
+      <p class="eyebrow" data-k="ficha.eyebrow">Status</p>
+      <h2 data-k="ficha.h2">Ficha do viajante</h2>
+    </header>
+
+    <div class="sheet panel">
+      <div class="sheet__id">
+        <div class="portrait" aria-hidden="true"><svg viewBox="0 0 120 120"><use href="#sigil"/></svg></div>
+        <h3 class="sheet__name">Samuel Abreu Sales</h3>
+        <p class="sheet__class" data-k="class">Desenvolvedor Back-end · PHP &amp; Laravel</p>
+        <dl class="sheet__meta">
+          <div><dt data-k="m0">Origem</dt><dd data-k="v0">ADS · IFMS</dd></div>
+          <div><dt data-k="m1">Arma principal</dt><dd data-k="v1">Laravel</dd></div>
+          <div><dt data-k="m2">Catalisador</dt><dd data-k="v2">Claude &amp; Codex</dd></div>
+          <div><dt data-k="m3">Pacto</dt><dd data-k="v3">Dos que morrem e tentam de novo</dd></div>
+          <div><dt data-k="m4">Estado</dt><dd class="ok" data-k="v4">Aberto a novas jornadas</dd></div>
+        </dl>
+      </div>
+
+      <div class="sheet__stats">
+        <h4 class="minor" data-k="attr">Atributos</h4>
+        <ul class="stats" id="stats">
+          <li><span class="stat__name" data-k="s0">Vigor</span><span class="stat__what">PHP &amp; Laravel</span><span class="stat__bar"><i style="--v:.86"></i></span><b>43</b></li>
+          <li><span class="stat__name" data-k="s1">Destreza</span><span class="stat__what">JavaScript · Alpine</span><span class="stat__bar"><i style="--v:.64"></i></span><b>32</b></li>
+          <li><span class="stat__name" data-k="s2">Resistência</span><span class="stat__what">MySQL &amp; SQL</span><span class="stat__bar"><i style="--v:.6"></i></span><b>30</b></li>
+          <li><span class="stat__name" data-k="s3">Agilidade</span><span class="stat__what">Node.js</span><span class="stat__bar"><i style="--v:.44"></i></span><b>22</b></li>
+          <li><span class="stat__name" data-k="s4">Inteligência</span><span class="stat__what">Python</span><span class="stat__bar"><i style="--v:.46"></i></span><b>23</b></li>
+          <li><span class="stat__name" data-k="s5">Fé</span><span class="stat__what" data-k="s5w">IA · Claude, Codex</span><span class="stat__bar"><i style="--v:.7"></i></span><b>35</b></li>
+          <li><span class="stat__name" data-k="s6">Arcano</span><span class="stat__what">Unity &amp; Godot</span><span class="stat__bar"><i style="--v:.4"></i></span><b>20</b></li>
+        </ul>
+
+        <h4 class="minor" data-k="lore">Lore</h4>
+        <p class="lore" data-k="lore1">Formado em Análise e Desenvolvimento de Sistemas pelo IFMS, este viajante segue o caminho do <em>back-end</em>: PHP e Laravel na mão principal, Node.js e Python na secundária, e IA como feitiço de apoio. Gosta de explorar linguagens novas e de forjar as próprias soluções.</p>
+        <p class="lore" data-k="lore2">Fora do código, morre repetidamente em <em>souls-likes</em>, e gosta disso. Também cria jogos: já passou pela Unity e pelo Godot, e até fez um contador de mortes para as Terras Intermédias.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ÁREAS -->
+  <section class="section" id="areas">
+    <header class="section__head">
+      <p class="eyebrow" data-k="areas.eyebrow">Mapa</p>
+      <h2 data-k="areas.h2">Áreas descobertas</h2>
+    </header>
+
+    <div class="areas">
+      <article class="area panel">
+        <p class="area__tag" data-k="area.tag">Área descoberta</p>
+        <h3 data-k="a0">Minas do Garimpo</h3>
+        <p class="area__real">garimpo.froglabs.site</p>
+        <p data-k="a0d">Um agregador de vagas de TI que escava a internet atrás de oportunidades. No fundo da mina, uma forja de currículos ATS com IA afia o seu currículo para cada vaga.</p>
+        <p class="loot" data-k="l0">Espólio: <span>vagas de TI</span><span>currículo ATS</span><span>IA</span></p>
+        <a class="travel" href="https://garimpo.froglabs.site" target="_blank" rel="noopener"><span data-k="travel">Viajar</span> <span aria-hidden="true">→</span></a>
+      </article>
+
+      <article class="area panel">
+        <p class="area__tag" data-k="area.tag">Área descoberta</p>
+        <h3 data-k="a1">Torre dos Mil Episódios</h3>
+        <p class="area__real">animetracker.froglabs.site</p>
+        <p data-k="a1d">Aqui os viajantes organizam animes, planejam a rotina de episódios e trocam histórias com a comunidade. A regra da torre: um episódio de cada vez.</p>
+        <p class="loot" data-k="l1">Espólio: <span>calendário</span><span>progresso</span><span>comunidade</span></p>
+        <a class="travel" href="https://animetracker.froglabs.site" target="_blank" rel="noopener"><span data-k="travel">Viajar</span> <span aria-hidden="true">→</span></a>
+        <a class="code" href="https://github.com/SamuelASDev/Anime-Calendario" target="_blank" rel="noopener" data-k="code">ver código</a>
+      </article>
+
+      <article class="area panel">
+        <p class="area__tag" data-k="area.tag">Área descoberta</p>
+        <h3 data-k="a2">Arena das Ranqueadas</h3>
+        <p class="area__real">loldashboard.froglabs.site</p>
+        <p data-k="a2d">Quartel-general para várias contas de League of Legends: registra cada batalha ranqueada Solo/Duo e mostra quem anda subindo e quem anda caindo.</p>
+        <p class="loot" data-k="l2">Espólio: <span>multicontas</span><span>Solo/Duo</span><span>estatísticas</span></p>
+        <a class="travel" href="https://loldashboard.froglabs.site/dashboard" target="_blank" rel="noopener"><span data-k="travel">Viajar</span> <span aria-hidden="true">→</span></a>
+        <a class="code" href="https://github.com/SamuelASDev/LolDashboard" target="_blank" rel="noopener" data-k="code">ver código</a>
+      </article>
+
+      <article class="area panel">
+        <p class="area__tag" data-k="area.tag">Área descoberta</p>
+        <h3 data-k="a3">Cidadela do Vértice</h3>
+        <p class="area__real">portifolio.froglabs.site</p>
+        <p data-k="a3d">Uma cidadela onde cada viajante ergue o próprio salão de troféus: cria, personaliza e publica o seu portfólio profissional. Seu trabalho, em perspectiva.</p>
+        <p class="loot" data-k="l3">Espólio: <span>portfólios</span><span>editor</span><span>publicação</span></p>
+        <a class="travel" href="https://portifolio.froglabs.site" target="_blank" rel="noopener"><span data-k="travel">Viajar</span> <span aria-hidden="true">→</span></a>
+        <a class="code" href="https://github.com/SamuelASDev/PortifolioSas" target="_blank" rel="noopener" data-k="code">ver código</a>
+      </article>
+
+      <article class="area area--chest panel">
+        <p class="area__tag" data-k="chest.tag">Item no chão</p>
+        <h3 data-k="chest.h3">Baú suspeitamente sozinho</h3>
+        <p data-k="chest.p">Está ali, num canto, sem nenhum inimigo por perto. Brilha um pouco demais.</p>
+        <button class="chest" id="chest" type="button">
+          <svg viewBox="0 0 64 48" aria-hidden="true">
+            <rect x="6" y="18" width="52" height="26" rx="2" fill="#3b2a1a" stroke="#c9a45c" stroke-width="2"/>
+            <path d="M6 20 Q32 2 58 20" fill="#4a3420" stroke="#c9a45c" stroke-width="2"/>
+            <rect x="28" y="22" width="8" height="10" fill="#c9a45c"/>
+          </svg>
+          <span data-k="chest.btn">Abrir o baú</span>
+        </button>
+      </article>
+    </div>
+  </section>
+
+  <!-- MENSAGENS -->
+  <section class="section" id="mensagens">
+    <header class="section__head">
+      <p class="eyebrow" data-k="msgs.eyebrow">Escrito no chão</p>
+      <h2 data-k="msgs.h2">Mensagens de outros viajantes</h2>
+      <p class="section__note" data-k="msgs.note">Avalie todas. Algo pode acontecer.</p>
+    </header>
+
+    <ul class="msgs" id="msgs">
+      <li class="msg"><p data-k="msg0">“Adiante, café.”</p></li>
+      <li class="msg"><p data-k="msg1">“Experimente deploy, mas sexta-feira.”</p></li>
+      <li class="msg"><p data-k="msg2">“Cuidado: bug à esquerda.”</p></li>
+      <li class="msg"><p data-k="msg3">“Se ao menos eu tivesse escrito testes…”</p></li>
+      <li class="msg"><p data-k="msg4">“Visão de pull request… portanto, respire.”</p></li>
+      <li class="msg"><p data-k="msg5">“Sapo adiante.”</p></li>
+    </ul>
+  </section>
+
+  <!-- VIAJAR -->
+  <section class="section" id="viajar">
+    <header class="section__head">
+      <p class="eyebrow" data-k="go.eyebrow">Viagem rápida</p>
+      <h2 data-k="go.h2">Para onde agora?</h2>
+    </header>
+
+    <div class="warps">
+      <a class="warp panel" href="https://portifolio.froglabs.site/samuel-abreu-sales" target="_blank" rel="noopener">
+        <span class="warp__ico" aria-hidden="true">◈</span>
+        <span class="warp__title" data-k="w0t">Portfólio</span>
+        <span class="warp__desc" data-k="w0">O grimório completo: projetos, tecnologias e currículo.</span>
+        <span class="warp__go"><span data-k="travel">Viajar</span> →</span>
+      </a>
+      <a class="warp panel" href="https://github.com/SamuelASDev" target="_blank" rel="noopener">
+        <span class="warp__ico" aria-hidden="true">⟁</span>
+        <span class="warp__title">GitHub</span>
+        <span class="warp__desc" data-k="w1">O arsenal: código-fonte dos projetos e experimentos.</span>
+        <span class="warp__go"><span data-k="travel">Viajar</span> →</span>
+      </a>
+    </div>
+
+    <p class="also"><span data-k="also">Também em</span> <a href="https://www.linkedin.com/in/samuel-abreu-sales-3569592b5" target="_blank" rel="noopener">LinkedIn</a></p>
+    <p class="closing" data-k="closing">Tem uma ideia, um projeto ou um jogo para construir junto? Invoque este viajante pelo portfólio. Ele está aberto a novas jornadas.</p>
+  </section>
+</main>
+
+<footer class="foot">
+  <svg viewBox="0 0 120 120" aria-hidden="true"><use href="#sigil"/></svg>
+  <p data-k="foot">FrogLabs · feito com PHP no coração e HTML puro nas mãos</p>
+  <p class="foot__fan" data-k="fan">Feito por fã, com visual original. Sem afiliação com a FromSoftware.</p>
+</footer>
+
+
+<!-- EASTER EGGS -->
+<div class="banner-big" id="banner" aria-live="assertive" hidden>
+  <p class="banner-big__text"></p>
+  <p class="banner-big__sub"></p>
+</div>
+
+<script src="assets/audio.js?v=7" defer></script>
+<script src="assets/themes.js?v=2" defer></script>
+<script src="assets/app.js?v=8" defer></script>
+</body>
+</html>
