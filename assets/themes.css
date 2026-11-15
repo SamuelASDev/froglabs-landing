@@ -11,7 +11,8 @@
 .foot__fan{margin-top:6px;font-size:.78rem;opacity:.7}
 
 /* fundo do topo (catedral) */
-.bonfire{position:relative;isolation:isolate}
+.bonfire{position:relative;isolation:isolate;overflow:hidden}
+body{overflow-x:clip}
 .hero-bg{position:absolute;top:0;bottom:0;left:50%;width:100vw;transform:translateX(-50%);z-index:-1;pointer-events:none;
   background:linear-gradient(180deg,rgba(11,10,8,.55) 0%,rgba(11,10,8,.25) 40%,rgba(11,10,8,.7) 80%,var(--bg) 100%),url("img/souls-bg.webp") center/cover}
 

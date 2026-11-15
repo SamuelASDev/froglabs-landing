@@ -7,7 +7,7 @@
   --hand:"IM Fell English",Georgia,serif;
 }
 *{box-sizing:border-box;margin:0;padding:0}
-html{scroll-padding-top:72px;scroll-behavior:smooth}
+html{scroll-padding-top:72px;scroll-behavior:smooth;overflow-x:hidden;overflow-x:clip}
 body{
   background:var(--bg); color:var(--ink); font:400 1.18rem/1.6 var(--serif);
   overflow-x:hidden; -webkit-font-smoothing:antialiased;
